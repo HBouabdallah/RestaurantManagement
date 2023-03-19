@@ -1,17 +1,29 @@
 using Microsoft.EntityFrameworkCore;
+using NuGet.Configuration;
+using RestaurantManagement;
 using RestaurantManagement.Models;
 using RestaurantManagement.Repositories;
 using RestaurantManagement.Repositories.Interfaces;
 using RestaurantManagement.Services;
+using Serilog;
+using Serilog.Formatting.Compact;
 
 internal class Program
 {
     private static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        var settings = GlobalSettings.GetSettings(builder.Configuration);
+        Log.Logger = new LoggerConfiguration()
+               .Enrich.FromLogContext()
+               .WriteTo.Console(new RenderedCompactJsonFormatter())
+               .WriteTo.File(settings.logPath, rollingInterval: RollingInterval.Day)
+               .CreateLogger();
+        builder.Services.AddSingleton(Log.Logger);
+        builder.Services.AddSingleton(settings);
 
         // Add services to the container.
-        builder.Services.AddDbContext<RestaurantManagementContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));
+        builder.Services.AddDbContext<RestaurantManagementContext>(options => options.UseSqlServer(settings.connectionString));
         builder.Services.AddScoped<ICrudRepository<Restaurant>, RestaurantRepository>();
         builder.Services.AddScoped<ICrudRepository<Meal>, MealRepository>();
         builder.Services.AddSingleton<Endpoints>();

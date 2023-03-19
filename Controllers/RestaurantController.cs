@@ -28,7 +28,8 @@ namespace RestaurantManagement.Controllers
             _mapper = mapper;
             _endpoints = endpoints;
         }
-        // GET: api/<RestaurantController>
+        /* Une méthode qui repond au besoin: Affichage de la liste des restaurants - Fonctionnalité 1 */
+
         [HttpGet("GetAllRestaurants")]
         public async Task<IActionResult> GetAllRestaurants()
         {
@@ -42,6 +43,8 @@ namespace RestaurantManagement.Controllers
                 return StatusCode(500, "Error while getting restaurants");
             }
         }
+        /* Une méthode qui repond au besoin: Afficher les plats disponibles dans un restaurant (Nom + Image) - Fonctionnalité 3
+         cette méthode utilise un DTO pour formater la réponse */
 
         [HttpGet("GetMealsOfRestaurant{RestaurantId}")]
         public async Task<IActionResult> GetMealsOfRestaurant(int RestaurantId)
@@ -50,17 +53,19 @@ namespace RestaurantManagement.Controllers
 
             if (restaurant != null)
             {
-                return Ok(restaurant.Meals);
+                var meamDto = _mapper.Map<List<MealDto>>(restaurant.Meals);
+
+                return Ok(meamDto);
             }
             else
             {
                 return StatusCode(500, "Restaurant not exist");
             }
         }
+        /* Une méthode qui repond au besoin: Ajouter de nouveaux restaurants */
 
-        // POST api/<RestaurantController>
         [HttpPost("AddNewRestaurant")]
-        public async Task<IActionResult> Post([FromBody] RestaurantMealDto restaurantDto)
+        public async Task<IActionResult> AddNewRestaurant([FromBody] RestaurantDto restaurantDto)
         {
             if (restaurantDto == null)
             {
@@ -80,24 +85,44 @@ namespace RestaurantManagement.Controllers
             }
 
         }
+        /* Une méthode qui repond au besoin: Pouvoir ajouter de nouveaux plats dans le menu d’un restaurant grâce à des propositions de l’API TheMealDb.
+         cette méthode prend en paramètre la liste des identifiants des plats à ajouter et l'identifiant du restaurant.
+          1 - nous vérifions si un repas existe déjà dans notre base de données par ID
+          2 - s'il existe donc nous n'avons pas besoin de faire un appel à l'API sinon nous faisons l'appel
+          3 - on récupère le plat depuis l'API et on l'ajoute à la liste des plats
+          4 - on récupère le restaurant par ID
+          5- si le restaurant existe on met à jour la liste des plats et on fait la mise à jour sinon on retourne notfound */
 
         [HttpPost("AddMealsToRestaurant{restaurantId}")]
-        public async Task<IActionResult> Post([FromBody] List<int> listMealId, int restaurantId)
+        public async Task<IActionResult> AddMealsToRestaurant([FromBody] List<int> listMealId, int restaurantId)
         {
-
-            var meals = await _mealRepository.GetListByFilterAsync(x => listMealId.Contains(x.Id));
-            if (meals.Count() < 1)
+            List<Meal> meals = new List<Meal>();
+            foreach (var mealId in listMealId)
             {
-                foreach (var mealId in listMealId)
+                var DBmeal = await _mealRepository.GetByFilterAsync(x => mealId == x.Id);
+                if (DBmeal != null)
                 {
-                    meals.Add(await _mealService.GetById(_endpoints.GetMealById, mealId));
+                    meals.Add(DBmeal);
+                }
+                else
+                {
+                    var meal = await _mealService.GetById(_endpoints.GetMealById, mealId);
+                    if (meal != null)
+                    {
+                        meals.Add(meal);
+                    }
                 }
             }
+
             if (meals.Count() < 1)
             {
                 return NotFound();
             }
             var restaurant = await _restaurantRepository.GetByFilterAsync(x => x.Id == restaurantId, x => x.Meals);
+            if (restaurant == null)
+            {
+                return NotFound();
+            }
             foreach (Meal meal in meals)
             {
                 if (!restaurant.Meals.Contains(meal))

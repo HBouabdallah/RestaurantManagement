@@ -9,9 +9,12 @@ namespace RestaurantManagement.Services
     public class ThemealService : IHttpService<Meal>
     {
         private HttpClient _client { get; }
-        public ThemealService(HttpClient client)
+        private Serilog.ILogger _logger { get; }
+
+        public ThemealService(HttpClient client, Serilog.ILogger logger)
         {
             _client = client;
+            _logger = logger;
         }
 
 
@@ -45,16 +48,14 @@ namespace RestaurantManagement.Services
                     meal.Quantity = quantity;
                     return (meal ?? null);
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Error: " + e.Message);
-
+                    _logger.Error(ex.Message);
                 }
-
             }
             else
             {
-                Console.WriteLine("Error: " + response.StatusCode);
+                _logger.Error(response.StatusCode.ToString());
             }
             return null;
         }

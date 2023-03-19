@@ -8,7 +8,8 @@ namespace RestaurantManagement.Helpers
     {
         public AutoMapperProfiles()
         {
-            CreateMap<RestaurantMealDto, Restaurant>();
+            CreateMap<RestaurantDto, Restaurant>();
+            CreateMap<Meal, MealDto>();
         }
     }
 }

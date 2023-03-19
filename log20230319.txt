@@ -1,0 +1,21 @@
+2023-03-19 20:03:10.204 +01:00 [ERR] An error occurred while saving the entity changes. See the inner exception for details.
+2023-03-19 20:04:58.717 +01:00 [ERR] Microsoft.Data.SqlClient.SqlException (0x80131904): Violation de la contrainte PRIMARY KEY « PK_Repas ». Impossible d'insérer une clé en double dans l'objet « db_owner.Meal ». Valeur de clé dupliquée : (0).
+L'instruction a été arrêtée.
+   at Microsoft.Data.SqlClient.SqlCommand.<>c.<ExecuteDbDataReaderAsync>b__208_0(Task`1 result)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.Tasks.Task.<>c.<.cctor>b__272_0(Object obj)
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location ---
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot, Thread threadPoolThread)
+--- End of stack trace from previous location ---
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.ReaderModificationCommandBatch.ExecuteAsync(IRelationalConnection connection, CancellationToken cancellationToken)
+ClientConnectionId:39a65b2f-0cf9-4fb0-aab5-06a732c0ad3b
+Error Number:2627,State:1,Class:14
+2023-03-19 20:14:48.740 +01:00 [ERR] Cannot access child value on Newtonsoft.Json.Linq.JValue.
+2023-03-19 20:14:48.891 +01:00 [ERR] Cannot access child value on Newtonsoft.Json.Linq.JValue.
+2023-03-19 20:16:41.233 +01:00 [ERR] Cannot access child value on Newtonsoft.Json.Linq.JValue.
+2023-03-19 20:18:31.077 +01:00 [ERR] Cannot access child value on Newtonsoft.Json.Linq.JValue.
+2023-03-19 20:18:33.366 +01:00 [ERR] Cannot access child value on Newtonsoft.Json.Linq.JValue.

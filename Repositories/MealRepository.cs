@@ -6,9 +6,12 @@ namespace RestaurantManagement.Repositories
     public class MealRepository : CrudRepository<Meal>
     {
         public RestaurantManagementContext _context { get; }
-        public MealRepository(RestaurantManagementContext context) : base(context)
+        public Serilog.ILogger _logger { get; }
+
+        public MealRepository(RestaurantManagementContext context, Serilog.ILogger logger) : base(context, logger)
         {
             _context = context;
+            _logger = logger;
         }
 
     }

@@ -29,6 +29,7 @@ public partial class RestaurantManagementContext : DbContext
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Category).HasMaxLength(250);
             entity.Property(e => e.Ingredient).HasMaxLength(250);
+            entity.Property(e => e.Name).HasMaxLength(250);
         });
 
         modelBuilder.Entity<Restaurant>(entity =>

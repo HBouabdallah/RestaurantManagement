@@ -9,6 +9,9 @@ public partial class Meal
     [Newtonsoft.Json.JsonProperty("idMeal")]
     public int Id { get; set; }
 
+    [Newtonsoft.Json.JsonProperty("strMeal")]
+    public string Name { get; set; } = null!;
+
     [Newtonsoft.Json.JsonProperty("strMealThumb")]
     public string ImgPath { get; set; } = null!;
 
