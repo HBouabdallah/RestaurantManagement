@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using RestaurantManagement.Models;
 using RestaurantManagement.Models.Dto;
 using RestaurantManagement.Repositories.Interfaces;
 using RestaurantManagement.Services;
+using RestaurantManagement.Helpers;
 
 namespace RestaurantManagement.Controllers
 {
@@ -18,7 +16,7 @@ namespace RestaurantManagement.Controllers
         private ICrudRepository<Meal> _mealRepository { get; }
         private IHttpService<Meal> _mealService { get; }
         private IMapper _mapper { get; }
-        public Endpoints _endpoints { get; }
+        private Endpoints _endpoints { get; }
 
         public RestaurantController(ICrudRepository<Restaurant> repository, ICrudRepository<Meal> mealRepository, IHttpService<Meal> mealService, IMapper mapper, Endpoints endpoints)
         {

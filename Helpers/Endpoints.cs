@@ -1,4 +1,4 @@
-﻿namespace RestaurantManagement.Services
+﻿namespace RestaurantManagement.Helpers
 {
     public class Endpoints
     {

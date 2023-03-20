@@ -13,12 +13,10 @@ namespace RestaurantManagement.Controllers
     public class MealController : ControllerBase
     {
         private ICrudRepository<Meal> _mealRepository { get; }
-        private IMapper _mapper { get; }
 
-        public MealController(ICrudRepository<Meal> mealRepository, IMapper mapper)
+        public MealController(ICrudRepository<Meal> mealRepository)
         {
             _mealRepository = mealRepository;
-            _mapper = mapper;
         }
         /* Une méthode qui repond au besoin: Afficher une vue détaillée d’un plat (Nom, Image, Catégorie, Ingrédients et quantités)
         */
